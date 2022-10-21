@@ -1,0 +1,22 @@
+$font-stack: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+$primary-color: #fff;
+
+html, body {
+  width: 100%;
+  height: 100%;
+
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font: 100% $font-stack;
+  color: $primary-color;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: url("https://images.unsplash.com/photo-1462331940025-496dfbfc7564?ixid=MnwxMTI1OHwwfDF8cmFuZG9tfHx8fHx8fHx8MTY2NjA0MzUwMg&ixlib=rb-1.2.1&q=85&w=1920") no-repeat center center;
+  background-size: cover;
+}

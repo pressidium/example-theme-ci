@@ -1,0 +1,29 @@
+{
+  "name": "example-theme-ci",
+  "version": "1.0.0",
+  "description": "An example WordPress theme to demonstrate how to build and deploy with GitHub Actions",
+  "main": "index.js",
+  "scripts": {
+    "build": "sass assets/scss/index.scss dist/index.css",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "sass": "^1.55.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pressidium/example-theme-ci.git"
+  },
+  "keywords": [
+    "pressidium",
+    "github-actions",
+    "ci-cd"
+  ],
+  "author": "Konstantinos Pappas <konpap@pressidium.com>",
+  "license": "GPL-2.0-or-later",
+  "bugs": {
+    "url": "https://github.com/pressidium/example-theme-ci/issues"
+  },
+  "homepage": "https://github.com/pressidium/example-theme-ci#readme",
+  "private": true
+}

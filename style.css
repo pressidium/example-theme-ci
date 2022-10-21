@@ -1,0 +1,16 @@
+/*
+ * Theme Name: Example Theme
+ * Theme URI: https://github.com/pressidium/example-theme-ci
+ * Author: Pressidium
+ * Author URI: https://pressidium.com
+ * Description: An example WordPress theme to demonstrate how to build and deploy with GitHub Actions.
+ * Tags: pressidium, github-actions, ci-cd
+ * Version: 1.0
+ * Requires at least: 5.9
+ * Tested up to: 6.1
+ * Requires PHP: 7.0
+ * License: GNU General Public License v2 or later
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain: example-theme-ci
+ * Domain Path: /languages
+ */

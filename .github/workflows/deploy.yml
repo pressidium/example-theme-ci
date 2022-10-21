@@ -1,0 +1,104 @@
+name: build-deploy
+on:
+  push:
+    branches:
+      # Pushing to any of the following
+      # branches will trigger our workflow
+      - main
+      - preview
+    paths-ignore:
+      # When all the path names match patterns in `paths-ignore`
+      # the workflow will not run. We don't want to do anything
+      # if we have changed *only* (some of) these files
+      - 'README.md'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        # Checkout our repository under `${GITHUB_WORKSPACE}`,
+        # so our workflow can access it
+        uses: actions/checkout@v3
+
+      - name: Install Composer dependencies
+        # This will run `composer install`
+        # since that's its default command
+        uses: php-actions/composer@v6
+
+      - name: Install Node.js LTS
+        # We use the LTS version of Node.js
+        # and cache packages installed via yarn
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+          cache: 'yarn'
+
+      - name: Install Node.js dependencies
+        run: yarn install
+
+      - name: Build theme
+        run: |
+          yarn run build
+
+      - name: Upload artifact
+        # Persist data produced during the build steps
+        # with a retention period of 1 day
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-theme-build
+          path: |
+            dist/
+            vendor/
+          retention-days: 1
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          # Fetch the entire Git history
+          fetch-depth: 0
+
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: my-theme-build
+          path: .
+
+      - name: Set environment variables (main)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "SFTP_USER=${{ secrets.SFTP_PROD_USER }}" >> $GITHUB_ENV
+          echo "SFTP_PASS=${{ secrets.SFTP_PROD_PASS }}" >> $GITHUB_ENV
+          echo "DEPLOY_PATH=/exampleci-www/wp-content/themes/example-theme-ci" >> $GITHUB_ENV
+
+      - name: Set environment variables (preview)
+        if: github.ref == 'refs/heads/preview'
+        run: |
+          echo "SFTP_USER=${{ secrets.SFTP_STAG_USER }}" >> $GITHUB_ENV
+          echo "SFTP_PASS=${{ secrets.SFTP_STAG_PASS }}" >> $GITHUB_ENV
+          echo "DEPLOY_PATH=/exampleci-dev-www/wp-content/themes/example-theme-ci" >> $GITHUB_ENV
+
+      - name: Set outputs
+        # Workaround to reference environment variables as inputs
+        # using step outputs, since we can't pass environment
+        # variables as inputs at the moment.
+        id: sftp_details
+        run: |
+          echo "user=${SFTP_USER}" >> $GITHUB_OUTPUT
+          echo "pass=${SFTP_PASS}" >> $GITHUB_OUTPUT
+          echo "deploy_path=${DEPLOY_PATH}" >> $GITHUB_OUTPUT
+          
+
+      - name: Deploy via SFTP
+        uses: over-engineer/lftp-mirror-action@v1
+        with:
+          host: ${{ secrets.SFTP_HOST }}
+          port: ${{ secrets.SFTP_PORT }}
+          user: ${{ steps.sftp_details.outputs.user }}
+          pass: ${{ steps.sftp_details.outputs.pass }}
+          remoteDir: ${{ steps.sftp_details.outputs.deploy_path }}
+          options: '--verbose'

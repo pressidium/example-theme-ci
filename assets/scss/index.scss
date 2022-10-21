@@ -1,0 +1,70 @@
+@use 'base';
+
+#page {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  flex-direction: column;
+
+  max-width: 600px;
+  padding: 0 40px;
+}
+
+article {
+  .entry-content {
+    text-align: center;
+  }
+}
+
+h2 {
+  font-size: 4em;
+}
+
+a {
+  &.wp-block-button__link {
+    border: 2px solid #fff !important;
+    transition: background-color .2s ease-in-out, color .2s ease-in-out !important;
+
+    &:hover {
+      background-color: #fff !important;
+      color: #000 !important;
+    }
+  }
+
+  &:not(.wp-block-button__link) {
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+
+    position: relative;
+
+    &::before {
+      transform: scaleX(0);
+      transform-origin: bottom right;
+
+      content: ' ';
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      inset: 0 0 0 0;
+      background: #4e31df;
+      z-index: -1;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover {
+      &::before {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+      }
+    }
+  }
+}
+
+footer {
+  text-align: center;
+  padding-top: 3em;
+}

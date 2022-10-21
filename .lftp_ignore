@@ -1,0 +1,12 @@
+## Directories to exclude
+.git/
+.github/
+assets/scss/
+node_modules/
+
+## Files to exclude
+.gitignore
+.lftp_ignore
+*.lock
+package*.json
+README.md

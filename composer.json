@@ -1,0 +1,15 @@
+{
+    "name": "pressidium/example-theme-ci",
+    "description": "An example WordPress theme to demonstrate how to build and deploy with GitHub Actions",
+    "type": "wordpress-theme",
+    "license": "GPLv2-or-later",
+    "authors": [
+        {
+            "name": "Konstantinos Pappas",
+            "email": "konpap@pressidium.com"
+        }
+    ],
+    "require": {
+        "gipetto/cowsay": "^1.1"
+    }
+}
