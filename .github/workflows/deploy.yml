@@ -94,7 +94,7 @@ jobs:
           
 
       - name: Deploy via SFTP
-        uses: over-engineer/lftp-mirror-action@v1
+        uses: pressidium/lftp-mirror-action@v1
         with:
           host: ${{ secrets.SFTP_HOST }}
           port: ${{ secrets.SFTP_PORT }}
